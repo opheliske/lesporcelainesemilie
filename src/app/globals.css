@@ -178,6 +178,7 @@ button { font-family: inherit; }
 .contact-email { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-style: italic; color: var(--bg); border-bottom: 1px solid rgba(250,246,240,0.3); padding-bottom: 4px; transition: border-color .2s; }
 .contact-email:hover { border-color: var(--canard); color: var(--canard); }
 .footer-bottom { margin-top: 80px; padding-top: 32px; border-top: 1px solid rgba(250,246,240,0.1); color: rgba(250,246,240,0.4); font-size: 13px; letter-spacing: 0.05em; }
+.footer-version { opacity: 0.4; margin-left: 12px; font-size: 11px; font-family: monospace; }
 
 /* === ADMIN === */
 .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; background: radial-gradient(ellipse at 30% 20%, rgba(42,122,140,0.10), transparent 60%), radial-gradient(ellipse at 70% 80%, rgba(138,154,124,0.08), transparent 60%), var(--bg); }
