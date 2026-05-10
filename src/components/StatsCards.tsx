@@ -2,27 +2,29 @@
 
 import { useEffect, useState } from 'react';
 import type { Oeuvre } from '@/types/oeuvre';
-import { CATEGORIE_LABELS } from '@/lib/constants';
+import { CATEGORIE_LABELS, THEME_LABELS } from '@/lib/constants';
 
 interface Stats {
   total: number;
   topCategorie: string;
+  topTheme: string;
   thisWeek: number;
+}
+
+function top(oeuvres: Oeuvre[], key: 'categorie' | 'theme'): string {
+  const counts: Record<string, number> = {};
+  for (const o of oeuvres) counts[o[key]] = (counts[o[key]] || 0) + 1;
+  return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? '';
 }
 
 function computeStats(oeuvres: Oeuvre[]): Stats {
   const total = oeuvres.length;
-
-  const counts: Record<string, number> = {};
-  for (const o of oeuvres) counts[o.categorie] = (counts[o.categorie] || 0) + 1;
-  const topKey = Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? '';
-  const topCategorie = CATEGORIE_LABELS[topKey as keyof typeof CATEGORIE_LABELS] ?? topKey;
-
+  const topCategorie = CATEGORIE_LABELS[top(oeuvres, 'categorie') as keyof typeof CATEGORIE_LABELS] ?? '—';
+  const topTheme = THEME_LABELS[top(oeuvres, 'theme') as keyof typeof THEME_LABELS] ?? '—';
   const weekAgo = new Date();
   weekAgo.setDate(weekAgo.getDate() - 7);
   const thisWeek = oeuvres.filter((o) => o.createdAt && new Date(o.createdAt) >= weekAgo).length;
-
-  return { total, topCategorie, thisWeek };
+  return { total, topCategorie, topTheme, thisWeek };
 }
 
 export default function StatsCards() {
@@ -56,6 +58,16 @@ export default function StatsCards() {
       ),
       label: 'Catégorie la plus représentée',
       value: stats ? stats.topCategorie : '—',
+    },
+    {
+      icon: (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <circle cx="12" cy="12" r="3" />
+          <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        </svg>
+      ),
+      label: 'Thème le plus représenté',
+      value: stats ? stats.topTheme : '—',
     },
     {
       icon: (

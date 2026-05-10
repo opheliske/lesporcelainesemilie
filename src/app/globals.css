@@ -216,7 +216,7 @@ button { font-family: inherit; }
 .tab.active .tab-badge { background: var(--canard); color: white; }
 
 /* === STATS === */
-.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0 0; }
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0 0; }
 .stat-card { background: var(--bg-card); border-radius: 8px; padding: 12px 14px; border: 1px solid var(--line); display: flex; align-items: center; gap: 12px; border-left: 3px solid var(--canard); }
 .stat-icon { color: var(--canard); opacity: 0.7; flex-shrink: 0; }
 .stat-icon svg { width: 16px; height: 16px; display: block; }
