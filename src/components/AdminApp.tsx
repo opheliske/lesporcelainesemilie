@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import UploadForm from './UploadForm';
 import OeuvresList from './OeuvresList';
+import StatsCards from './StatsCards';
 import Toast from './Toast';
 
 export default function AdminApp({ initiallyLoggedIn }: { initiallyLoggedIn: boolean }) {
@@ -71,6 +72,7 @@ export default function AdminApp({ initiallyLoggedIn }: { initiallyLoggedIn: boo
           <h1>Mes <em>œuvres</em></h1>
           <p>Ajoutez de nouvelles photos, classez-les par thème et catégorie. Tout est mis en ligne immédiatement.</p>
         </div>
+        <StatsCards />
         <div className="tabs">
           <button className={`tab ${tab === 'add' ? 'active' : ''}`} onClick={() => setTab('add')}>Ajouter une œuvre</button>
           <button className={`tab ${tab === 'list' ? 'active' : ''}`} onClick={() => setTab('list')}>
