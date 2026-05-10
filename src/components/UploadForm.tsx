@@ -94,6 +94,7 @@ export default function UploadForm({ onPublished }: { onPublished: (title: strin
 
   return (
     <div className="upload-grid">
+      {/* Colonne gauche : preview / dropzone */}
       <div>
         {!file ? (
           <label
@@ -116,55 +117,19 @@ export default function UploadForm({ onPublished }: { onPublished: (title: strin
             <input type="file" accept="image/*" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
           </label>
         ) : (
-          <>
-            <div className={previewClasses.join(' ')}>
-              <div className="preview-img" style={{ backgroundImage: `url(${previewUrl})` }} />
-              <button className="preview-replace" type="button" onClick={reset}>Remplacer</button>
-              {bgLoading && <div className="preview-loading show"><div className="big-spinner" /><div>Suppression du fond…</div></div>}
-            </div>
-
-            <div className="tools-panel show">
-              <div className="tools-header">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z" /></svg>
-                Outils image
-              </div>
-              <button type="button" className={`btn-magic ${bgLoading ? 'loading' : ''}`} disabled={bgLoading} onClick={handleRemoveBg}>
-                <svg className="magic-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z" /></svg>
-                <div className="spinner" />
-                <span>{bgLoading ? 'Traitement en cours…' : (bgRemoved ? 'Re-traiter la photo' : "Supprimer l'arrière-plan")}</span>
-              </button>
-              {bgRemoved && (
-                <>
-                  <div className="bg-options show">
-                    <span className="bg-options-label">Nouveau fond&nbsp;:</span>
-                    {(['transparent', 'white', 'cream', 'sand', 'sage'] as BgColor[]).map((c) => (
-                      <button
-                        key={c}
-                        type="button"
-                        className={`bg-swatch ${bgColor === c ? 'active' : ''}`}
-                        data-bg={c}
-                        style={bgSwatchStyles[c] ? { background: bgSwatchStyles[c] } : undefined}
-                        onClick={() => setBgColor(c)}
-                        aria-label={c}
-                      />
-                    ))}
-                  </div>
-                  <div className="tools-actions show">
-                    <span className="tools-status">Arrière-plan supprimé</span>
-                    <button type="button" className="btn-link" onClick={restoreOriginal}>↶ Restaurer l&apos;image originale</button>
-                  </div>
-                </>
-              )}
-            </div>
-          </>
+          <div className={previewClasses.join(' ')}>
+            <div className="preview-img" style={{ backgroundImage: `url(${previewUrl})` }} />
+            <button className="preview-replace" type="button" onClick={reset}>Remplacer</button>
+            {bgLoading && <div className="preview-loading show"><div className="big-spinner" /><div>Suppression du fond…</div></div>}
+          </div>
         )}
       </div>
 
+      {/* Colonne droite : formulaire + outils */}
       <form className="form-card" ref={formRef} onSubmit={handleSubmit}>
         <div className="field">
           <label>Titre de l&apos;œuvre <span className="req">*</span></label>
           <input className="input" type="text" name="title" placeholder="ex: Assiette aux pivoines" required />
-          <span className="field-hint">Un nom court qui parle de la pièce.</span>
         </div>
         <div className="field-row">
           <div className="field">
@@ -184,8 +149,46 @@ export default function UploadForm({ onPublished }: { onPublished: (title: strin
         </div>
         <div className="field">
           <label>Description <span className="field-hint">(optionnelle)</span></label>
-          <textarea className="textarea" name="description" placeholder="Quelques mots sur la pièce, l'inspiration, la matière, la taille…" />
+          <textarea className="textarea" name="description" placeholder="Quelques mots sur la pièce…" />
         </div>
+
+        {/* Outils image — visible uniquement quand une image est sélectionnée */}
+        {file && (
+          <div className="tools-panel show">
+            <div className="tools-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z" /></svg>
+              Outils image
+            </div>
+            <button type="button" className={`btn-magic ${bgLoading ? 'loading' : ''}`} disabled={bgLoading} onClick={handleRemoveBg}>
+              <svg className="magic-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z" /></svg>
+              <div className="spinner" />
+              <span>{bgLoading ? 'Traitement en cours…' : (bgRemoved ? 'Re-traiter la photo' : "Supprimer l'arrière-plan")}</span>
+            </button>
+            {bgRemoved && (
+              <>
+                <div className="bg-options show">
+                  <span className="bg-options-label">Nouveau fond&nbsp;:</span>
+                  {(['transparent', 'white', 'cream', 'sand', 'sage'] as BgColor[]).map((c) => (
+                    <button
+                      key={c}
+                      type="button"
+                      className={`bg-swatch ${bgColor === c ? 'active' : ''}`}
+                      data-bg={c}
+                      style={bgSwatchStyles[c] ? { background: bgSwatchStyles[c] } : undefined}
+                      onClick={() => setBgColor(c)}
+                      aria-label={c}
+                    />
+                  ))}
+                </div>
+                <div className="tools-actions show">
+                  <span className="tools-status">Arrière-plan supprimé</span>
+                  <button type="button" className="btn-link" onClick={restoreOriginal}>↶ Restaurer l&apos;image originale</button>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
         <div className="form-actions">
           <button type="button" className="btn btn-ghost" onClick={reset} disabled={submitting}>Annuler</button>
           <button type="submit" className="btn btn-primary" disabled={!file || submitting}>
