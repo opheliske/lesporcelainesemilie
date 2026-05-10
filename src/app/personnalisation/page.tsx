@@ -19,7 +19,13 @@ export default function PersonnalisationPage() {
 
       <section className="section">
         <div className="container intro">
-          <div className="intro-img" />
+          <div className="intro-img">
+            <img
+              src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_fit,w_800,h_1000,q_auto,f_auto/oeuvres-emilie/enfants_assiettes/tabluever7khcjo9evut.jpg`}
+              alt="Assiette cochon Louis"
+              style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }}
+            />
+          </div>
           <div>
             <span className="section-eyebrow">Sur commande</span>
             <h2>Chaque pièce<br /><em>raconte une histoire</em>.</h2>
