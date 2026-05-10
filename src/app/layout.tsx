@@ -3,7 +3,19 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: "Les Porcelaines d'Émilie",
-  description: "Porcelaines peintes à la main, pièces uniques.",
+  description: "Porcelaines peintes à la main — pièces uniques et commandes personnalisées. Naissance, mariage, anniversaire…",
+  openGraph: {
+    title: "Les Porcelaines d'Émilie",
+    description: "Porcelaines peintes à la main — pièces uniques et commandes personnalisées.",
+    siteName: "Les Porcelaines d'Émilie",
+    locale: 'fr_FR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Les Porcelaines d'Émilie",
+    description: "Porcelaines peintes à la main — pièces uniques et commandes personnalisées.",
+  },
 };
 
 export const viewport: Viewport = {
