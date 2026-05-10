@@ -5,11 +5,13 @@ import { join } from 'path';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-export default async function Image() {
-  const fontData = readFileSync(join(process.cwd(), 'public/fonts/Geist-Regular.ttf'));
+export default function Image() {
+  const fontNormal = readFileSync(join(process.cwd(), 'public/fonts/CormorantGaramond-Light.ttf'));
+  const fontItalic = readFileSync(join(process.cwd(), 'public/fonts/CormorantGaramond-LightItalic.ttf'));
+  const fontGeist  = readFileSync(join(process.cwd(), 'public/fonts/Geist-Regular.ttf'));
 
-  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-  const photo = `https://res.cloudinary.com/${cloudName}/image/upload/c_fill,w_900,h_1260,g_auto,q_auto,f_auto/oeuvres-emilie/enfants_assiettes/tabluever7khcjo9evut.jpg`;
+  const canard = '#1F5F73';
+  const brass  = '#B89160';
 
   return new ImageResponse(
     (
@@ -17,168 +19,152 @@ export default async function Image() {
         style={{
           width: '100%',
           height: '100%',
+          background: canard,
           display: 'flex',
-          background: '#041C24',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '80px',
           position: 'relative',
           overflow: 'hidden',
         }}
       >
-        {/* Halo canard décoratif en haut à gauche */}
-        <div
-          style={{
-            position: 'absolute',
-            top: -160,
-            left: -160,
-            width: 520,
-            height: 520,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(8,145,168,0.22) 0%, transparent 68%)',
-            display: 'flex',
-          }}
-        />
+        {/* Halos radiaux décoratifs */}
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'radial-gradient(ellipse at 20% 30%, rgba(184,145,96,0.10) 0%, transparent 50%)',
+          display: 'flex',
+        }} />
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'radial-gradient(ellipse at 80% 80%, rgba(255,255,255,0.06) 0%, transparent 60%)',
+          display: 'flex',
+        }} />
 
-        {/* Halo secondaire en bas */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: -100,
-            left: 200,
-            width: 300,
-            height: 300,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(8,145,168,0.10) 0%, transparent 70%)',
-            display: 'flex',
-          }}
-        />
+        {/* Anneau décoratif haut-droite */}
+        <div style={{
+          position: 'absolute',
+          width: 460, height: 460,
+          borderRadius: '50%',
+          border: '1px solid rgba(184,145,96,0.22)',
+          right: -120, top: -120,
+          display: 'flex',
+        }} />
 
-        {/* Panneau texte gauche */}
-        <div
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            padding: '64px 52px 64px 72px',
-            position: 'relative',
-          }}
-        >
-          {/* Eyebrow */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 40 }}>
-            <div style={{ width: 32, height: 2, background: '#0891A8', display: 'flex', borderRadius: 2 }} />
-            <span
-              style={{
-                fontSize: 12,
-                letterSpacing: '0.28em',
-                color: '#0891A8',
-                textTransform: 'uppercase',
-                fontWeight: 400,
-              }}
-            >
-              Fait main · France
-            </span>
-          </div>
+        {/* Anneau décoratif bas-gauche */}
+        <div style={{
+          position: 'absolute',
+          width: 320, height: 320,
+          borderRadius: '50%',
+          border: '1px solid rgba(184,145,96,0.18)',
+          left: -80, bottom: -80,
+          display: 'flex',
+        }} />
 
-          {/* Titre */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 0, marginBottom: 32 }}>
-            <span
-              style={{
-                fontSize: 82,
-                color: 'white',
-                fontWeight: 400,
-                lineHeight: 1,
-                letterSpacing: '-0.025em',
-              }}
-            >
-              Les Porcelaines
-            </span>
-            <span
-              style={{
-                fontSize: 82,
-                color: '#0891A8',
-                fontWeight: 400,
-                lineHeight: 1.05,
-                letterSpacing: '-0.025em',
-              }}
-            >
-              d'Émilie
-            </span>
-          </div>
-
-          {/* Description */}
-          <span
-            style={{
-              fontSize: 19,
-              color: 'rgba(255,255,255,0.48)',
-              lineHeight: 1.6,
-              maxWidth: 340,
-              fontWeight: 400,
-            }}
-          >
-            Pièces uniques peintes à la main. Commandes personnalisées pour toutes les occasions.
+        {/* Eyebrow — "Maison · Atelier français" avec lignes laiton */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 18,
+          marginBottom: 38,
+          zIndex: 1,
+        }}>
+          <div style={{ width: 40, height: 1, background: brass, display: 'flex' }} />
+          <span style={{
+            fontFamily: 'Geist',
+            fontSize: 13,
+            letterSpacing: '0.45em',
+            textTransform: 'uppercase',
+            color: brass,
+            fontWeight: 400,
+          }}>
+            Maison · Atelier français
           </span>
-
-          {/* URL pill */}
-          <div style={{ display: 'flex', marginTop: 48 }}>
-            <div
-              style={{
-                background: 'rgba(8,145,168,0.12)',
-                border: '1px solid rgba(8,145,168,0.35)',
-                borderRadius: 999,
-                padding: '9px 20px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-              }}
-            >
-              <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#0891A8', display: 'flex' }} />
-              <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', letterSpacing: '0.04em' }}>
-                lesporcelainesdemilie.vercel.app
-              </span>
-            </div>
-          </div>
+          <div style={{ width: 40, height: 1, background: brass, display: 'flex' }} />
         </div>
 
-        {/* Photo droite */}
-        <div
-          style={{
-            width: 420,
-            flexShrink: 0,
-            padding: '36px 40px 36px 0',
-            display: 'flex',
-          }}
-        >
-          <div
-            style={{
-              flex: 1,
-              borderRadius: 24,
-              overflow: 'hidden',
-              display: 'flex',
-              position: 'relative',
-              outline: '1px solid rgba(255,255,255,0.07)',
-            }}
-          >
-            <img
-              src={photo}
-              width={380}
-              height={558}
-              style={{ objectFit: 'cover', objectPosition: 'center', width: '100%', height: '100%' }}
-            />
-            {/* Vignette légère sur le bord gauche de la photo pour fondre avec le texte */}
-            <div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(to right, rgba(4,28,36,0.35) 0%, transparent 35%)',
-                display: 'flex',
-              }}
-            />
-          </div>
+        {/* Titre */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginBottom: 28,
+          zIndex: 1,
+          gap: 0,
+        }}>
+          <span style={{
+            fontFamily: 'Cormorant',
+            fontSize: 124,
+            lineHeight: 0.98,
+            fontWeight: 300,
+            color: 'white',
+            letterSpacing: '-0.025em',
+            textAlign: 'center',
+          }}>
+            Les Porcelaines
+          </span>
+          <span style={{
+            fontFamily: 'CormorantItalic',
+            fontSize: 124,
+            lineHeight: 1,
+            fontWeight: 300,
+            color: brass,
+            letterSpacing: '-0.025em',
+            fontStyle: 'italic',
+            textAlign: 'center',
+          }}>
+            d'Émilie
+          </span>
+        </div>
+
+        {/* Séparateur laiton */}
+        <div style={{
+          width: 60, height: 1,
+          background: brass,
+          marginBottom: 28,
+          zIndex: 1,
+          display: 'flex',
+        }} />
+
+        {/* Tagline */}
+        <div style={{
+          display: 'flex',
+          fontFamily: 'CormorantItalic',
+          fontStyle: 'italic',
+          fontSize: 26,
+          color: 'rgba(255,255,255,0.82)',
+          textAlign: 'center',
+          lineHeight: 1.4,
+          fontWeight: 300,
+          zIndex: 1,
+        }}>
+          Porcelaines peintes à la main — pièces uniques et commandes personnalisées
+        </div>
+
+        {/* URL */}
+        <div style={{
+          display: 'flex',
+          position: 'absolute',
+          bottom: 40,
+          fontFamily: 'Geist',
+          fontSize: 12,
+          letterSpacing: '0.3em',
+          textTransform: 'uppercase',
+          color: 'rgba(255,255,255,0.5)',
+          fontWeight: 400,
+          zIndex: 1,
+        }}>
+          lesporcelainesdemilie.vercel.app
         </div>
       </div>
     ),
     {
       ...size,
-      fonts: [{ name: 'Geist', data: fontData, style: 'normal', weight: 400 }],
+      fonts: [
+        { name: 'Cormorant',       data: fontNormal, style: 'normal', weight: 300 },
+        { name: 'CormorantItalic', data: fontItalic, style: 'italic', weight: 300 },
+        { name: 'Geist',           data: fontGeist,  style: 'normal', weight: 400 },
+      ],
     }
   );
 }
