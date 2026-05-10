@@ -78,7 +78,7 @@ export default function Gallery({ oeuvres }: { oeuvres: Oeuvre[] }) {
           ) : (
             filtered.map((o, i) => (
               <article className="oeuvre" key={o.publicId} onClick={() => setLbIndex(i)}>
-                <img src={o.full} alt={o.title} loading="lazy" />
+                <img src={o.thumb} alt={o.title} loading="lazy" />
                 <div className="oeuvre-info">
                   <h4>{o.title}</h4>
                   <div className="oeuvre-tags">{THEME_LABELS[o.theme]} · {CATEGORIE_LABELS[o.categorie]}</div>

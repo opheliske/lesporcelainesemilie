@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { deleteOeuvre, updateOeuvre } from '@/lib/cloudinary';
+import { deleteOeuvre, updateOeuvre, invalidateOeuvresCache } from '@/lib/cloudinary';
 
 export async function PATCH(
   req: NextRequest,
@@ -30,6 +30,7 @@ export async function PATCH(
     description,
     buffer,
   });
+  invalidateOeuvresCache();
 
   return NextResponse.json(oeuvre);
 }
@@ -40,5 +41,6 @@ export async function DELETE(
 ) {
   const { publicId } = await params;
   await deleteOeuvre(decodeURIComponent(publicId));
+  invalidateOeuvresCache();
   return NextResponse.json({ ok: true });
 }

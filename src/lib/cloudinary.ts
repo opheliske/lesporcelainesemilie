@@ -1,5 +1,6 @@
 import 'server-only';
 import { v2 as cloudinary } from 'cloudinary';
+import { unstable_cache, revalidateTag } from 'next/cache';
 import type { Oeuvre, Theme, Categorie } from '@/types/oeuvre';
 import { THEMES, CATEGORIES } from './constants';
 
@@ -57,7 +58,7 @@ export async function uploadOeuvre(args: {
   return toOeuvre(result);
 }
 
-export async function getAllOeuvres(): Promise<Oeuvre[]> {
+async function fetchAllOeuvres(): Promise<Oeuvre[]> {
   const all: any[] = [];
   let cursor: string | undefined;
   do {
@@ -75,9 +76,18 @@ export async function getAllOeuvres(): Promise<Oeuvre[]> {
   return all.map(toOeuvre);
 }
 
+export const getAllOeuvres = unstable_cache(fetchAllOeuvres, ['all-oeuvres'], {
+  tags: ['oeuvres'],
+  revalidate: 3600,
+});
+
 export async function getRecentOeuvres(n: number): Promise<Oeuvre[]> {
   const all = await getAllOeuvres();
   return all.slice(0, n);
+}
+
+export function invalidateOeuvresCache() {
+  revalidateTag('oeuvres', {});
 }
 
 export async function updateOeuvre(args: {

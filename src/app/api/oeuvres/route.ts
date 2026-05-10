@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { uploadOeuvre, getAllOeuvres } from '@/lib/cloudinary';
+import { uploadOeuvre, getAllOeuvres, invalidateOeuvresCache } from '@/lib/cloudinary';
 
 export async function GET() {
   const oeuvres = await getAllOeuvres();
@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
 
   const buffer = Buffer.from(await file.arrayBuffer());
   const oeuvre = await uploadOeuvre({ buffer, title, theme, categorie, description });
+  invalidateOeuvresCache();
 
   return NextResponse.json(oeuvre, { status: 201 });
 }
