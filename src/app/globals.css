@@ -304,6 +304,10 @@ button { font-family: inherit; }
 .icon-btn:hover { background: white; transform: scale(1.05); }
 .icon-btn.delete:hover { background: var(--danger); color: white; }
 .icon-btn.edit:hover { background: var(--canard); color: white; }
+.icon-btn.pin:hover { background: #F5C518; color: white; }
+.icon-btn.pin.pinned { background: #F5C518; color: white; }
+.icon-btn.pin.pinned:hover { background: white; color: var(--ink); }
+.pin-badge { position: absolute; top: 8px; left: 8px; background: #F5C518; color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.2); z-index: 1; }
 .icon-btn svg { width: 16px; height: 16px; }
 .oeuvre-item .info { padding: 14px 16px; }
 .oeuvre-item h4 { font-size: 18px; font-style: italic; line-height: 1.2; margin-bottom: 6px; }

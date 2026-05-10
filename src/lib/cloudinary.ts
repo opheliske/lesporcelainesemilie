@@ -21,6 +21,7 @@ function toOeuvre(r: any): Oeuvre {
   const tags: string[] = r.tags || [];
   const theme = (tags.find((t) => t.startsWith('theme:'))?.slice(6) || '') as Theme;
   const categorie = (tags.find((t) => t.startsWith('cat:'))?.slice(4) || '') as Categorie;
+  const pinned = tags.includes('pinned');
   const ctx = r.context?.custom || r.context || {};
   return {
     publicId: r.public_id,
@@ -31,6 +32,7 @@ function toOeuvre(r: any): Oeuvre {
     thumb: url(r.public_id, 'c_fit,w_600,h_750,q_auto,f_auto'),
     full: url(r.public_id, 'c_fit,w_1200,h_1500,q_auto,f_auto'),
     createdAt: r.created_at,
+    pinned,
   };
 }
 
@@ -86,6 +88,21 @@ export async function getRecentOeuvres(n: number): Promise<Oeuvre[]> {
   return all.slice(0, n);
 }
 
+export async function getPinnedOeuvres(): Promise<Oeuvre[]> {
+  const all = await getAllOeuvres();
+  const pinned = all.filter((o) => o.pinned);
+  return pinned.length > 0 ? pinned : all.slice(0, 10);
+}
+
+export async function setPinned(publicId: string, pin: boolean): Promise<void> {
+  if (pin) {
+    await cloudinary.uploader.add_tag('pinned', [publicId]);
+  } else {
+    await cloudinary.uploader.remove_tag('pinned', [publicId]);
+  }
+  revalidateTag('oeuvres', {});
+}
+
 export function invalidateOeuvresCache() {
   revalidateTag('oeuvres', {});
 }
@@ -137,6 +154,7 @@ export async function updateOeuvre(args: {
     thumb: url(args.publicId, 'c_fit,w_600,h_750,q_auto,f_auto'),
     full: url(args.publicId, 'c_fit,w_1200,h_1500,q_auto,f_auto'),
     createdAt: '',
+    pinned: false,
   };
 }
 

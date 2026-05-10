@@ -4,10 +4,10 @@ import ContactFooter from '@/components/ContactFooter';
 
 export const dynamic = 'force-dynamic';
 import Carousel from '@/components/Carousel';
-import { getRecentOeuvres } from '@/lib/cloudinary';
+import { getPinnedOeuvres } from '@/lib/cloudinary';
 
 export default async function HomePage() {
-  const recent = await getRecentOeuvres(10);
+  const recent = await getPinnedOeuvres();
 
   return (
     <>

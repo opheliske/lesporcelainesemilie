@@ -10,4 +10,5 @@ export interface Oeuvre {
   thumb: string;
   full: string;
   createdAt: string;
+  pinned: boolean;
 }

@@ -20,6 +20,7 @@ export default function OeuvresList({
   const [q, setQ] = useState('');
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Oeuvre | null>(null);
+  const [pinning, setPinning] = useState<string | null>(null);
 
   useEffect(() => {
     fetch('/api/oeuvres')
@@ -43,6 +44,18 @@ export default function OeuvresList({
       onCountChange(next.length);
       onDeleted(o.title);
     }
+  }
+
+  async function handleTogglePin(o: Oeuvre) {
+    setPinning(o.publicId);
+    const next = !o.pinned;
+    await fetch(`/api/oeuvres/${encodeURIComponent(o.publicId)}/pin`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pinned: next }),
+    });
+    setItems((prev) => prev.map((it) => it.publicId === o.publicId ? { ...it, pinned: next } : it));
+    setPinning(null);
   }
 
   function handleSaved(updated: Oeuvre) {
@@ -69,7 +82,20 @@ export default function OeuvresList({
             <article className="oeuvre-item" key={o.publicId}>
               <div className="oeuvre-thumb">
                 <img src={o.thumb} alt={o.title} />
+                {o.pinned && (
+                  <div className="pin-badge" title="Épinglée sur la page d'accueil">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                  </div>
+                )}
                 <div className="oeuvre-actions">
+                  <button
+                    className={`icon-btn pin ${o.pinned ? 'pinned' : ''}`}
+                    title={o.pinned ? 'Désépingler de l\'accueil' : 'Épingler sur l\'accueil'}
+                    disabled={pinning === o.publicId}
+                    onClick={() => handleTogglePin(o)}
+                  >
+                    <svg viewBox="0 0 24 24" fill={o.pinned ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" width="16" height="16"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                  </button>
                   <button className="icon-btn edit" title="Modifier" onClick={() => setEditing(o)}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                   </button>
