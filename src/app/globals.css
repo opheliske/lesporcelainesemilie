@@ -180,8 +180,10 @@ button { font-family: inherit; }
 .contact p { color: rgba(255,255,255,0.65); font-size: 17px; max-width: 480px; margin: 0 auto 40px; }
 .contact-email { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-style: italic; color: white; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 4px; transition: border-color .2s; }
 .contact-email:hover { border-color: white; color: var(--canard-light); }
-.footer-bottom { margin-top: 80px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.38); font-size: 13px; letter-spacing: 0.05em; }
+.footer-bottom { margin-top: 80px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.38); font-size: 13px; letter-spacing: 0.05em; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 .footer-version { opacity: 0.4; margin-left: 12px; font-size: 11px; font-family: monospace; }
+.footer-admin-link { font-size: 12px; color: rgba(255,255,255,0.25); letter-spacing: 0.12em; text-transform: uppercase; padding: 10px 0; transition: color .2s; }
+.footer-admin-link:hover { color: rgba(255,255,255,0.55); }
 
 /* === ADMIN === */
 .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; background: linear-gradient(135deg, var(--canard) 0%, var(--canard-dark) 60%, #041C24 100%); }

@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function ContactFooter() {
   return (
     <section className="contact" id="contact">
@@ -6,7 +8,10 @@ export default function ContactFooter() {
         <h2>Parlons de <em>votre pièce</em>.</h2>
         <p>N&apos;hésitez pas à m&apos;écrire pour toute question, commande ou simplement échanger autour de la porcelaine peinte.</p>
         <a href="mailto:emilie.carbonaro@gmail.com" className="contact-email">emilie.carbonaro@gmail.com</a>
-        <div className="footer-bottom">Les Porcelaines d&apos;Émilie © {new Date().getFullYear()} — Fait avec soin <span className="footer-version">{process.env.NEXT_PUBLIC_VERSION}</span></div>
+        <div className="footer-bottom">
+          <span>Les Porcelaines d&apos;Émilie © {new Date().getFullYear()} — Fait avec soin <span className="footer-version">{process.env.NEXT_PUBLIC_VERSION}</span></span>
+          <Link href="/admin" className="footer-admin-link">Espace Émilie</Link>
+        </div>
       </div>
     </section>
   );
