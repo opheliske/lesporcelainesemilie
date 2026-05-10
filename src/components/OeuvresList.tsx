@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Oeuvre } from '@/types/oeuvre';
-import { THEME_LABELS, CATEGORIE_LABELS } from '@/lib/constants';
+import { THEMES, CATEGORIES, THEME_LABELS, CATEGORIE_LABELS } from '@/lib/constants';
 import EditModal from './EditModal';
 
 const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -18,6 +18,8 @@ export default function OeuvresList({
 }) {
   const [items, setItems] = useState<Oeuvre[]>([]);
   const [q, setQ] = useState('');
+  const [theme, setTheme] = useState('');
+  const [categorie, setCategorie] = useState('');
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Oeuvre | null>(null);
   const [pinning, setPinning] = useState<string | null>(null);
@@ -32,8 +34,17 @@ export default function OeuvresList({
       });
   }, [onCountChange]);
 
-  const nq = norm(q);
-  const visible = items.filter((o) => !nq || norm(o.title).includes(nq));
+  const visible = useMemo(() => {
+    const nq = norm(q.trim());
+    return items.filter((o) =>
+      (!theme || o.theme === theme) &&
+      (!categorie || o.categorie === categorie) &&
+      (!nq || norm(o.title).includes(nq))
+    );
+  }, [items, q, theme, categorie]);
+
+  const anyFilter = theme || categorie || q.trim();
+  const clearAll = () => { setTheme(''); setCategorie(''); setQ(''); };
 
   async function handleDelete(o: Oeuvre) {
     if (!confirm(`Supprimer « ${o.title} » ?`)) return;
@@ -67,16 +78,44 @@ export default function OeuvresList({
 
   return (
     <>
-      <div className="list-toolbar">
+      {/* Filtres */}
+      <div className="list-filters">
         <div className="list-search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
           <input type="search" placeholder="Rechercher une œuvre…" value={q} onChange={(e) => setQ(e.target.value)} />
         </div>
-        <span className="user-name">{items.length} œuvre{items.length > 1 ? 's' : ''} au total</span>
+        <div className="filter-row">
+          <span className="filter-label">Thèmes</span>
+          <div className="filter-chips">
+            <button className={`chip ${!theme ? 'active' : ''}`} onClick={() => setTheme('')}>Tous</button>
+            {THEMES.map((t) => (
+              <button key={t} className={`chip ${theme === t ? 'active' : ''}`} onClick={() => setTheme(t)}>{THEME_LABELS[t]}</button>
+            ))}
+          </div>
+        </div>
+        <div className="filter-row">
+          <span className="filter-label">Catégories</span>
+          <div className="filter-chips">
+            <button className={`chip ${!categorie ? 'active' : ''}`} onClick={() => setCategorie('')}>Toutes</button>
+            {CATEGORIES.map((c) => (
+              <button key={c} className={`chip ${categorie === c ? 'active' : ''}`} onClick={() => setCategorie(c)}>{CATEGORIE_LABELS[c]}</button>
+            ))}
+          </div>
+        </div>
+        <div className="list-meta">
+          <span className="results-count"><strong>{visible.length}</strong> / {items.length} œuvre{items.length > 1 ? 's' : ''}</span>
+          {anyFilter && <button className="clear-all" onClick={clearAll}>Effacer les filtres</button>}
+        </div>
       </div>
+
+      {/* Grille */}
       <div className="oeuvre-list">
         {loading ? (
-          <div>Chargement…</div>
+          <div style={{ padding: '40px', color: 'var(--muted)', fontSize: '15px' }}>Chargement…</div>
+        ) : visible.length === 0 ? (
+          <div style={{ gridColumn: '1/-1', padding: '40px 0', color: 'var(--muted)', fontSize: '15px', textAlign: 'center' }}>
+            Aucune œuvre ne correspond aux filtres.
+          </div>
         ) : (
           visible.map((o) => (
             <article className="oeuvre-item" key={o.publicId}>
@@ -90,7 +129,7 @@ export default function OeuvresList({
                 <div className="oeuvre-actions">
                   <button
                     className={`icon-btn pin ${o.pinned ? 'pinned' : ''}`}
-                    title={o.pinned ? 'Désépingler de l\'accueil' : 'Épingler sur l\'accueil'}
+                    title={o.pinned ? "Désépingler de l'accueil" : "Épingler sur l'accueil"}
                     disabled={pinning === o.publicId}
                     onClick={() => handleTogglePin(o)}
                   >

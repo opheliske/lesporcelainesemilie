@@ -290,11 +290,12 @@ button { font-family: inherit; }
 .toast-icon { width: 22px; height: 22px; background: var(--canard); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; }
 
 /* oeuvres list (admin) */
-.list-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; gap: 16px; flex-wrap: wrap; }
-.list-search { position: relative; flex: 1; max-width: 400px; }
+.list-filters { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+.list-search { position: relative; max-width: 400px; }
 .list-search svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); }
-.list-search input { width: 100%; padding: 12px 16px 12px 42px; border: 1px solid var(--line); border-radius: 999px; font-family: inherit; font-size: 14px; background: var(--bg); }
+.list-search input { width: 100%; padding: 10px 16px 10px 42px; border: 1px solid var(--line); border-radius: 999px; font-family: inherit; font-size: 14px; background: var(--bg); }
 .list-search input:focus { outline: none; border-color: var(--canard); }
+.list-meta { display: flex; align-items: center; gap: 16px; padding-top: 10px; border-top: 1px solid var(--line); }
 .oeuvre-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .oeuvre-item { background: var(--bg-card); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); transition: all .2s; }
 .oeuvre-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
